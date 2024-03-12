@@ -7,7 +7,7 @@ CREATE TABLE "Community" (
     "last_Name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "message" TEXT,
-    "phone_Number" BIGINT,
+    "phone_Number" TEXT,
 
     CONSTRAINT "Community_pkey" PRIMARY KEY ("id")
 );

@@ -21,5 +21,44 @@ model Community {
   last_Name String
   email String @unique
   message String?
-  phone_Number BigInt?
+  phone_Number String?
+}
+
+model FirstTimer {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  first_Name String
+  last_Name String
+  email String
+  phone_Number String
+  inviter String?
+  location String?
+  prayerRequest String?
+}
+
+model PrayerForm {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  first_Name String
+  last_Name String
+  email String
+  phone_Number String
+  prayerRequest String
+}
+
+model TestimonyForm {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  avatar String
+  avatarPublicId String
+  first_Name String
+  last_Name String
+  email String
+  phone_Number String
+  title String @default("Give a title to this testimony")
+  testimony String
+  accept Boolean @default(false)
 }
