@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Community {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  first_Name String
+  last_Name String
+  email String @unique
+  message String?
+  phone_Number String?
+}
+
+model FirstTimer {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  first_Name String
+  last_Name String
+  email String
+  phone_Number String
+  inviter String?
+  location String?
+  prayerRequest String?
+}
+
+model PrayerForm {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  first_Name String
+  last_Name String
+  email String
+  phone_Number String
+  prayerRequest String
+}
+
+model TestimonyForm {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  avatar String
+  avatarPublicId String
+  first_Name String
+  last_Name String
+  email String
+  phone_Number String
+  title String @default("Give a title to this testimony")
+  testimony String
+  accept Boolean @default(false)
+}
