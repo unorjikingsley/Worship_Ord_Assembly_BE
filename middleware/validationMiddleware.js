@@ -4,6 +4,7 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from '../errors/customErrors.js';
+import prisma from '../DB/db.config.js';
 
 const withValidationErrors = (validateValues) => {
   return [
@@ -57,19 +58,21 @@ export const validateTestimonyInput = withValidationErrors([
   body('testimony').notEmpty().withMessage('Tell us more about your testimony'),
 ]);
 
-// export const validateIdParam = withValidationErrors([
-//   param('id').custom(async (value, { req }) => {
-//     const isValidMongoId = mongoose.Types.ObjectId.isValid(value);
-//     if (!isValidMongoId) throw new BadRequestError('invalid MongoDB id');
-//     const job = await Job.findById(value);
-//     if (!job) throw new NotFoundError(`no job with id ${value}`);
-//     const isAdmin = req.user.role === 'admin';
-//     const isOwner = req.user.userId === job.createdBy.toString();
+export const validateIdParam = withValidationErrors([
+  param('id').custom(async (value, { req }) => {
+    const testimony = await prisma.testimonyForm.findUnique({
+      where: { id: parseInt(value) },
+    })
+    if (!testimony) throw new NotFoundError(`No testimony with id ${value}`)
 
-//     if (!isAdmin && !isOwner)
-//       throw new UnauthorizedError('not authorized to access this route');
-//   }),
-// ]);
+    // const isAdmin = req.user.role === 'admin';
+    // const isOwner = req.user.userId === job.createdBy.toString();
+
+    // if (!isAdmin && !isOwner)
+    //   throw new UnauthorizedError('not authorized to access this route');
+  }),
+])
+
 
 // export const validateRegisterInput = withValidationErrors([
 //   body('name').notEmpty().withMessage('name is required'),
