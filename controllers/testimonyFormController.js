@@ -1,53 +1,28 @@
+import prisma from '../DB/db.config.js';
+import { StatusCodes } from 'http-status-codes';
 import cloudinary from 'cloudinary';
-import { promises as fs } from 'fs';
 import { formatImage } from '../middleware/multerMiddleware.js';
 
 export const createTestimonyForm = async (req, res) => {
   try {
-    const {
-      first_Name,
-      last_Name,
-      email,
-      phone_Number,
-      title,
-      testimony,
-      accept,
-    } = req.body
 
-    if (
-      !first_Name ||
-      !last_Name ||
-      !email ||
-      !phone_Number ||
-      !testimony
-    ) {
-      return res.status(400).json({ error: 'Missing required fields' })
-    }
+    console.log('Incoming request body:', req.body) // Log request body
+    console.log('Uploaded file:', req.file) // Log uploaded file
 
-    let avatarUrl = '';
+    const user = { ...req.body }
 
     if (req.file) {
       const imageInfo = formatImage(req.file)
 
-      const cloudinaryResponse = await cloudinary.uploader.upload(
-        imageInfo.path
-      )
+      const cloudinaryResponse = await cloudinary.v2.uploader.upload(imageInfo)
 
-      avatarUrl = cloudinaryResponse.secure_url
-
-      await fs.unlink(imageInfo.path)
+      user.avatar = cloudinaryResponse.secure_url
+      user.avatarPublicId = cloudinaryResponse.public_id
     }
 
     const testimonyForm = await prisma.testimonyForm.create({
       data: {
-        first_Name,
-        last_Name,
-        email,
-        phone_Number,
-        title,
-        testimony,
-        accept,
-        avatar: avatarUrl,
+        ...user,
       },
     })
 

@@ -9,15 +9,15 @@ import cookieParser from 'cookie-parser'
 import cloudinary from 'cloudinary';
 import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
 
-app.use(errorHandlerMiddleware);
-
-const PORT = process.env.PORT || 3000
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
 })
+
+app.use(errorHandlerMiddleware);
+
+const PORT = process.env.PORT || 3000
 
 // Middleware for logging request body
 // app.use((req, res, next) => {
