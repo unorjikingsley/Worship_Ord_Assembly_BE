@@ -11,15 +11,21 @@ import upload from '../middleware/multerMiddleware.js';
 
 const router = Router();
 
-router.get('/', getAllTestimonyForm)
-router.post(
-  '/',
-  upload.single('avatar'),
-  validateTestimonyInput,
-  createTestimonyForm
+router
+  .route('/')
+  .get(getAllTestimonyForm)
+  .post(
+    upload.single('avatar'),
+    validateTestimonyInput,
+    createTestimonyForm
   )
-  router.get('/:id', validateIdParam, getTestimonyForm)
-  router.delete('/:id', validateIdParam, deleteTestimonyForm)
-  router.patch('/:id', validateIdParam, updateTestimonyForm)
+
+  router
+    .route('/:id')
+    .get(validateIdParam, getTestimonyForm)
+    .patch(upload.single('avatar'), validateIdParam, updateTestimonyForm)
+    .delete(validateIdParam, deleteTestimonyForm)
+
+  // router.patch('/update-user', upload.single('avatar'), validateIdParam, updateTestimonyForm)
 
 export default router;

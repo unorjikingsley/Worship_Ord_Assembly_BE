@@ -15,10 +15,6 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 })
 
-app.use(errorHandlerMiddleware);
-
-const PORT = process.env.PORT || 3000
-
 // Middleware for logging request body
 // app.use((req, res, next) => {
 //   console.log('Request Body:', req.body)
@@ -47,6 +43,10 @@ app.use('*', (req, res) => {
 //   }
 //   next()
 // })
+
+app.use(errorHandlerMiddleware)
+
+const PORT = process.env.PORT || 3000
 
 try {
   app.listen(PORT, () => {
