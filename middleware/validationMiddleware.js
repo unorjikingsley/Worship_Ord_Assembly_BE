@@ -58,6 +58,50 @@ export const validateTestimonyInput = withValidationErrors([
   body('testimony').notEmpty().withMessage('Tell us more about your testimony'),
 ]);
 
+export const validateMessageInput = withValidationErrors([
+  body('Topic').notEmpty().withMessage('Topic is required'),
+  body('sub_Topic').notEmpty().withMessage('Sub topic is required'),
+  body('minister').notEmpty().withMessage('Minister is required'),
+  body('duration')
+    .isInt({ min: 1 })
+    .withMessage('Duration must be a positive integer'),
+  body('message').notEmpty().withMessage('Message is required'),
+  body('link')
+    .optional({ nullable: true })
+    .isURL()
+    .withMessage('Invalid URL format'),
+])
+
+export const validateWOACommunityInput = withValidationErrors([
+  body('full_Name').notEmpty().withMessage('Full name is required'),
+  body('email')
+    .notEmpty()
+    .withMessage('Email is required')
+    .isEmail()
+    .withMessage('Invalid email format'),
+  body('phone_Number')
+    .optional({ nullable: true })
+    .isMobilePhone('any')
+    .withMessage('Invalid phone number format'),
+  // body('communities')
+  //   .notEmpty()
+  //   .withMessage('Community status is required')
+  //   .isIn([
+  //     'MarriageCounsellingWorkshop',
+  //     'YouthProgramsAndCommunities',
+  //     'KidsProgram',
+  //     'MenMinistry',
+  //     'YouthLeader',
+  //     'TrybeTeam',
+  //   ])
+  //   .withMessage('Invalid community status'),
+  body('reasons')
+    .optional({ nullable: true })
+    .isString()
+    .withMessage('Reasons must be a string'),
+])
+
+
 export const validateIdParam = withValidationErrors([
   param('id').custom(async (value, { req }) => {
     const testimony = await prisma.testimonyForm.findUnique({

@@ -62,3 +62,38 @@ model TestimonyForm {
   testimony String
   accept Boolean @default(false)
 }
+
+model Message {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  image String
+  imagePublicId String
+  Date String @map("date")
+  Topic String
+  sub_Topic String
+  minister String
+  duration Int
+  message String
+  link String
+}
+
+model WOA_Community {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  full_Name    String
+  email        String   @unique
+  phone_Number String?
+  communities    CommunityStatus @default(KidsProgram)
+  reasons      String?
+}
+
+enum CommunityStatus {
+  MarriageCounsellingWorkshop
+  YouthProgramsAndCommunities
+  KidsProgram
+  MenMinistry
+  YouthLeader
+  TrybeTeam
+}
