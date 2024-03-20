@@ -117,6 +117,14 @@ export const validateIdParam = withValidationErrors([
   }),
 ])
 
+export const validateContactUsInput = withValidationErrors([
+  body('first_Name').notEmpty().withMessage('Your first name is required'),
+  body('last_Name').notEmpty().withMessage('Your last name is required'),
+  body('email').notEmpty().withMessage('A valid email is required'),
+  body('phone_Number').notEmpty().withMessage('A valid phone number is required'),
+  body('descriptions').notEmpty().withMessage('Please write us a message'),
+])
+
 
 // export const validateRegisterInput = withValidationErrors([
 //   body('name').notEmpty().withMessage('name is required'),

@@ -2,8 +2,15 @@ import 'express-async-errors';
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import express from 'express'
+import express from 'express';
+import cors from 'cors';
+// const cors = require('cors')?
 const app = express()
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+  })
+)
 
 import cookieParser from 'cookie-parser'
 import cloudinary from 'cloudinary';

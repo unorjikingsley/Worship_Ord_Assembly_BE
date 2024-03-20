@@ -97,3 +97,14 @@ enum CommunityStatus {
   YouthLeader
   TrybeTeam
 }
+
+model ContactUsModel {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  first_Name    String
+  last_Name    String
+  email        String
+  phone_Number String?
+  descriptions      String?
+}
