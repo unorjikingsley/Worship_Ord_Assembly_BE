@@ -73,13 +73,9 @@ export const updateTestimonyForm = async (req, res) => {
       return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid ID' })
     }
 
-    // console.log('parsedId:', parsedId)
-
     const existingTestimony = await prisma.testimonyForm.findUnique({
       where: { id: parsedId },
     })
-
-    // console.log('existingTestimony:', existingTestimony)
 
     if (!existingTestimony) {
       return res
@@ -89,16 +85,20 @@ export const updateTestimonyForm = async (req, res) => {
 
     const updatedData = { ...req.body }
 
-    // console.log('updatedData:', updatedData)
-
-    // console.log('req file:', req.file)
-
-    // Check if there's a file uploaded
     if (req.file) {
       const imageInfo = formatImage(req.file)
       const cloudinaryResponse = await cloudinary.v2.uploader.upload(imageInfo)
       updatedData.avatar = cloudinaryResponse.secure_url
       updatedData.avatarPublicId = cloudinaryResponse.public_id
+    } else {
+      // If no new image is uploaded, retain the existing image URL
+      updatedData.avatar = existingTestimony.avatar
+      updatedData.avatarPublicId = existingTestimony.avatarPublicId
+    }
+
+    // Convert 'accept' field to boolean
+    if ('accept' in updatedData) {
+      updatedData.accept = updatedData.accept === 'true'
     }
 
     const updatedTestimony = await prisma.testimonyForm.update({
