@@ -117,6 +117,21 @@ export const validateIdParam = withValidationErrors([
   }),
 ])
 
+export const validateMessageIdParam = withValidationErrors([
+  param('id').custom(async (value, { req }) => {
+    const message = await prisma.message.findUnique({
+      where: { id: parseInt(value) },
+    })
+    if (!message) throw new NotFoundError(`No message with id ${value}`)
+
+    // const isAdmin = req.user.role === 'admin';
+    // const isOwner = req.user.userId === job.createdBy.toString();
+
+    // if (!isAdmin && !isOwner)
+    //   throw new UnauthorizedError('not authorized to access this route');
+  }),
+])
+
 export const validateContactUsInput = withValidationErrors([
   body('first_Name').notEmpty().withMessage('Your first name is required'),
   body('last_Name').notEmpty().withMessage('Your last name is required'),

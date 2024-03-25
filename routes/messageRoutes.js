@@ -9,7 +9,7 @@ import {
 import upload from '../middleware/multerMiddleware.js';
 
 import {
-  validateIdParam,
+  validateMessageIdParam,
   validateMessageInput
 } from '../middleware/validationMiddleware.js'
 
@@ -22,13 +22,13 @@ router
 
 router
   .route('/:id')
-  .get(validateIdParam, getMessage)
+  .get(validateMessageIdParam, getMessage)
   .patch(
-    validateIdParam,
+    validateMessageIdParam,
     upload.single('image'),
     validateMessageInput,
     updateMessage
   )
-  .delete(validateIdParam, deleteMessage)
+  .delete(validateMessageIdParam, deleteMessage)
 
 export default router

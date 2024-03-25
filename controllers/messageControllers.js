@@ -97,6 +97,10 @@ export const updateMessage = async (req, res) => {
       const cloudinaryResponse = await cloudinary.v2.uploader.upload(imageInfo)
       updatedData.image = cloudinaryResponse.secure_url
       updatedData.imagePublicId = cloudinaryResponse.public_id
+    } else {
+      // If no new image is uploaded, retain the existing image URL
+      updatedData.image = existingMessage.image
+      updatedData.imagePublicId = existingMessage.imagePublicId
     }
 
     const updatedMessage = await prisma.message.update({
