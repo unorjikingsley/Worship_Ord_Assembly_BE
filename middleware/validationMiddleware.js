@@ -72,6 +72,13 @@ export const validateMessageInput = withValidationErrors([
     .withMessage('Invalid URL format'),
 ])
 
+export const validateEventsInput = withValidationErrors([
+  body('type').notEmpty().withMessage('Input the type of service'),
+  body('date').notEmpty().withMessage('Date is required'),
+  body('time').notEmpty().withMessage('Time estimation is required'),
+  body('address').notEmpty().withMessage('Input Physical location'),
+])
+
 export const validateWOACommunityInput = withValidationErrors([
   body('full_Name').notEmpty().withMessage('Full name is required'),
   body('email')
@@ -123,6 +130,21 @@ export const validateMessageIdParam = withValidationErrors([
       where: { id: parseInt(value) },
     })
     if (!message) throw new NotFoundError(`No message with id ${value}`)
+
+    // const isAdmin = req.user.role === 'admin';
+    // const isOwner = req.user.userId === job.createdBy.toString();
+
+    // if (!isAdmin && !isOwner)
+    //   throw new UnauthorizedError('not authorized to access this route');
+  }),
+])
+
+export const validateEventIdParam = withValidationErrors([
+  param('id').custom(async (value, { req }) => {
+    const event = await prisma.events.findUnique({
+      where: { id: parseInt(value) },
+    })
+    if (!event) throw new NotFoundError(`No event with id ${value}`)
 
     // const isAdmin = req.user.role === 'admin';
     // const isOwner = req.user.userId === job.createdBy.toString();

@@ -6,6 +6,7 @@ import TestimonyRoutes from "./testimonyRoutes.js";
 import MessageRoutes from "./messageRoutes.js";
 import WOACommunities from "./woaCommunitiesRoutes.js";
 import contactUsRoutes from "./contactUsRoutes.js";
+import eventRoutes from "./eventRoutes.js";
 
 const router = Router()
 
@@ -16,5 +17,6 @@ router.use('/api/testimony-form', TestimonyRoutes)
 router.use('/api/message', MessageRoutes)
 router.use('/api/woa-communities', WOACommunities)
 router.use('/api/contact-form', contactUsRoutes)
+router.use('/api/events', eventRoutes)
 
 export default router;

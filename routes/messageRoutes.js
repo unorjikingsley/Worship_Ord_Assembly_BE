@@ -31,4 +31,4 @@ router
   )
   .delete(validateMessageIdParam, deleteMessage)
 
-export default router
+export default router;

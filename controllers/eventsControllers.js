@@ -1,14 +1,11 @@
-import prisma from '../DB/db.config.js';
-import { StatusCodes } from 'http-status-codes';
-import cloudinary from 'cloudinary';
-import { formatImage } from '../middleware/multerMiddleware.js';
+import prisma from '../DB/db.config.js'
+import { StatusCodes } from 'http-status-codes'
+import cloudinary from 'cloudinary'
+import { formatImage } from '../middleware/multerMiddleware.js'
 
-export const createMessage = async (req, res) => {
+export const createEvents = async (req, res) => {
   try {
     const user = { ...req.body }
-
-    // Parse the duration string to an integer
-    user.duration = parseInt(user.duration)
 
     if (req.file) {
       const imageInfo = formatImage(req.file)
@@ -18,42 +15,42 @@ export const createMessage = async (req, res) => {
       user.imagePublicId = cloudinaryResponse.public_id
     }
 
-    const message = await prisma.message.create({
+    const event = await prisma.events.create({
       data: {
         ...user,
       },
     })
 
-    res.status(StatusCodes.CREATED).json({ message })
+    res.status(StatusCodes.CREATED).json({ event })
   } catch (error) {
     console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
 
-export const getAllMessages = async (req, res) => {
+export const getAllEvents = async (req, res) => {
   try {
-    const messages = await prisma.message.findMany({})
-    res.status(StatusCodes.OK).json({ messages })
+    const events = await prisma.events.findMany({})
+    res.status(StatusCodes.OK).json({ events })
   } catch (error) {
     // console.error('Error:', error
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
 
-export const getMessage = async (req, res) => {
+export const getEvent = async (req, res) => {
   try {
-    const message = await prisma.message.findUnique({
+    const event = await prisma.events.findUnique({
       where: { id: parseInt(req.params.id) },
     })
 
-    if (!message) {
+    if (!event) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ error: 'Message form not found' })
+        .json({ error: 'Event form not found' })
     }
 
-    res.status(StatusCodes.OK).json({ message })
+    res.status(StatusCodes.OK).json({ event })
   } catch (error) {
     console.error('Error:', error)
     return res
@@ -62,7 +59,7 @@ export const getMessage = async (req, res) => {
   }
 }
 
-export const updateMessage = async (req, res) => {
+export const updateEvent = async (req, res) => {
   try {
     const { id } = req.params
     const parsedId = parseInt(id)
@@ -73,19 +70,17 @@ export const updateMessage = async (req, res) => {
 
     // console.log('parsedId:', parsedId)
 
-    const existingMessage = await prisma.message.findUnique({
+    const existingEvent = await prisma.events.findUnique({
       where: { id: parsedId },
     })
 
-    if (!existingMessage) {
+    if (!existingEvent) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ error: 'Message not found' })
+        .json({ error: 'Events not found' })
     }
 
     const updatedData = { ...req.body }
-    updatedData.duration = parseInt(req.body.duration)
-
 
     // console.log('updatedData:', updatedData)
 
@@ -99,25 +94,23 @@ export const updateMessage = async (req, res) => {
       updatedData.imagePublicId = cloudinaryResponse.public_id
     } else {
       // If no new image is uploaded, retain the existing image URL
-      updatedData.image = existingMessage.image
-      updatedData.imagePublicId = existingMessage.imagePublicId
+      updatedData.image = existingEvent.image
+      updatedData.imagePublicId = existingEvent.imagePublicId
     }
 
-    const updatedMessage = await prisma.message.update({
+    const updatedEvent = await prisma.events.update({
       where: { id: parsedId },
       data: updatedData,
     })
 
-    console.log('updated Message:', updatedMessage)
+    console.log('updated events:', updatedEvent)
 
     // Delete previous image from Cloudinary if a new one was uploaded
-    if (req.file && existingMessage.imagePublicId) {
-      await cloudinary.v2.uploader.destroy(existingMessage.imagePublicId)
+    if (req.file && existingEvent.imagePublicId) {
+      await cloudinary.v2.uploader.destroy(existingEvent.imagePublicId)
     }
 
-    res
-      .status(StatusCodes.OK)
-      .json({ msg: 'Message modified', updatedMessage })
+    res.status(StatusCodes.OK).json({ msg: 'Event modified', updatedEvent })
   } catch (error) {
     console.error('Error:', error)
     return res
@@ -126,29 +119,29 @@ export const updateMessage = async (req, res) => {
   }
 }
 
-export const deleteMessage = async (req, res) => {
+export const deleteEvent = async (req, res) => {
   try {
-    const deletedMessage = await prisma.message.findUnique({
+    const deletedEvent = await prisma.events.findUnique({
       where: { id: parseInt(req.params.id) },
     })
 
-    if (!deletedMessage) {
+    if (!deletedEvent) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ error: 'Message not found' })
+        .json({ error: 'Events not found' })
     }
 
-    await prisma.message.delete({
+    await prisma.events.delete({
       where: { id: parseInt(req.params.id) },
     })
 
-    if (deletedMessage.imagePublicId) {
-      await cloudinary.v2.uploader.destroy(deletedMessage.imagePublicId)
+    if (deletedEvent.avatarPublicId) {
+      await cloudinary.v2.uploader.destroy(deletedEvent.imagePublicId)
     }
 
     res
       .status(StatusCodes.OK)
-      .json({ msg: 'Message deleted', message: deletedMessage })
+      .json({ msg: 'Event deleted', event: deletedEvent })
   } catch (error) {
     console.error('Error:', error)
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
