@@ -122,3 +122,14 @@ model Events {
   time         String
   address      String
 }
+
+model User {
+  id          Int       @id @default(autoincrement())
+  first_Name        String
+  last_Name        String
+  email       String    @unique
+  password    String
+  role        String    @default("user")
+  
+  @@unique([role], name: "UniqueUserRole")
+}

@@ -7,6 +7,8 @@ import MessageRoutes from "./messageRoutes.js";
 import WOACommunities from "./woaCommunitiesRoutes.js";
 import contactUsRoutes from "./contactUsRoutes.js";
 import eventRoutes from "./eventRoutes.js";
+import userRoutes from "./userRoutes.js";
+import authRoutes from "./authRoutes.js";
 
 const router = Router()
 
@@ -18,5 +20,7 @@ router.use('/api/message', MessageRoutes)
 router.use('/api/woa-communities', WOACommunities)
 router.use('/api/contact-form', contactUsRoutes)
 router.use('/api/events', eventRoutes)
+router.use('/api/user', userRoutes)
+router.use('/api/auth', authRoutes)
 
 export default router;
