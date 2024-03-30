@@ -26,7 +26,6 @@ export const createMessage = async (req, res) => {
 
     res.status(StatusCodes.CREATED).json({ message })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
@@ -36,7 +35,6 @@ export const getAllMessages = async (req, res) => {
     const messages = await prisma.message.findMany({})
     res.status(StatusCodes.OK).json({ messages })
   } catch (error) {
-    // console.error('Error:', error
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
@@ -55,7 +53,6 @@ export const getMessage = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ message })
   } catch (error) {
-    console.error('Error:', error)
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Internal Server Error' })
@@ -71,8 +68,6 @@ export const updateMessage = async (req, res) => {
       return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid ID' })
     }
 
-    // console.log('parsedId:', parsedId)
-
     const existingMessage = await prisma.message.findUnique({
       where: { id: parsedId },
     })
@@ -85,11 +80,6 @@ export const updateMessage = async (req, res) => {
 
     const updatedData = { ...req.body }
     updatedData.duration = parseInt(req.body.duration)
-
-
-    // console.log('updatedData:', updatedData)
-
-    // console.log('req file:', req.file)
 
     // Check if there's a file uploaded
     if (req.file) {
@@ -108,8 +98,6 @@ export const updateMessage = async (req, res) => {
       data: updatedData,
     })
 
-    console.log('updated Message:', updatedMessage)
-
     // Delete previous image from Cloudinary if a new one was uploaded
     if (req.file && existingMessage.imagePublicId) {
       await cloudinary.v2.uploader.destroy(existingMessage.imagePublicId)
@@ -119,7 +107,6 @@ export const updateMessage = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: 'Message modified', updatedMessage })
   } catch (error) {
-    console.error('Error:', error)
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Internal Server Error' })
@@ -150,7 +137,6 @@ export const deleteMessage = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: 'Message deleted', message: deletedMessage })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: 'Internal Server Error',
     })

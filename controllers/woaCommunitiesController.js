@@ -19,10 +19,8 @@ export const createWOACommunities = async (req, res) => {
       },
     })
 
-    // return res.status(200).json({ data:community, msg:"A form is added"  });
     res.status(StatusCodes.CREATED).json({ community })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
@@ -30,10 +28,8 @@ export const createWOACommunities = async (req, res) => {
 export const getAllCommunity = async (req, res) => {
   try {
     const communities = await prisma.wOA_Community.findMany({})
-    // res.status(200).json({ data: communities })
     res.status(StatusCodes.OK).json({ communities })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
@@ -52,7 +48,6 @@ export const getACommunity = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ woa_community })
   } catch (error) {
-    console.error('Error:', error)
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Internal Server Error' })
@@ -64,12 +59,10 @@ export const updateCommunity = async (req, res) => {
     const { id } = req.params
     const parsedId = parseInt(id)
 
-    // Check if the community with the provided ID exists
     const existingCommunity = await prisma.wOA_Community.findUnique({
       where: { id: parsedId },
     })
 
-    // If the community doesn't exist, return a 404 Not Found response
     if (!existingCommunity) {
       return res
         .status(StatusCodes.NOT_FOUND)
@@ -78,22 +71,15 @@ export const updateCommunity = async (req, res) => {
 
     const updatedData = { ...req.body }
 
-    // Perform the update operation on the community data here
-    // For example:
     const updatedCommunity = await prisma.wOA_Community.update({
       where: { id: parsedId },
       data: updatedData,
     });
 
-    console.log('updated communities:', updatedCommunity)
-
-    // Return a success response with the updated community data
     res
       .status(StatusCodes.OK)
       .json({ msg: 'Community modified', community: updatedCommunity })
   } catch (error) {
-    // If any error occurs during the update process, return a 500 Internal Server Error response
-    console.error('Error:', error)
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Internal Server Error' })
@@ -120,7 +106,6 @@ export const deletedWoaCommunities = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: 'Community deleted', communities: deletedCommunity })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: 'Internal Server Error',
     })

@@ -22,7 +22,6 @@ export const createCommunity = async (req, res) => {
     // return res.status(200).json({ data:community, msg:"A form is added"  });
     res.status(StatusCodes.CREATED).json({ community })
   } catch (error) {
-    console.error('Error:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
@@ -30,10 +29,8 @@ export const createCommunity = async (req, res) => {
 export const getAllCommunity = async (req, res) => {
   try {
     const communities = await prisma.community.findMany({})
-    // res.status(200).json({ data: communities })
     res.status(StatusCodes.OK).json({ communities })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }

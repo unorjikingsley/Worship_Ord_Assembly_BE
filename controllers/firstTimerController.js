@@ -31,7 +31,6 @@ export const getAllFirstTimers = async (req, res) => {
     const firstTimers = await prisma.firstTimer.findMany({})
     res.status(StatusCodes.OK).json({ firstTimers })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }

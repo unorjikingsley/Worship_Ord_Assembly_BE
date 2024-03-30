@@ -14,11 +14,9 @@ export const createContactUsForm = async (req, res) => {
         ...req.body,
       },
     })
-    // console.log('contactForm:', contactForm);
     res.status(StatusCodes.CREATED).json({ contactForm })
 
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
@@ -28,7 +26,6 @@ export const getAllcontactUsForm = async (req, res) => {
     const contactForm = await prisma.contactUsModel.findMany({})
     res.status(StatusCodes.OK).json({ contactForm })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }

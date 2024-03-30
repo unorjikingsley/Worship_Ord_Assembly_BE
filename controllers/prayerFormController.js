@@ -21,7 +21,6 @@ export const createPrayerForm = async (req, res) => {
 
     res.status(StatusCodes.CREATED).json({ prayerForm })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
@@ -31,7 +30,6 @@ export const getAllPrayerForm = async (req, res) => {
     const prayerForms = await prisma.prayerForm.findMany({})
     res.status(StatusCodes.OK).json({ prayerForms })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }

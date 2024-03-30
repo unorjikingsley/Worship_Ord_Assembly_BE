@@ -15,7 +15,6 @@ const withValidationErrors = (validateValues) => {
         const errorMessages = errors.array().map((error) => error.msg);
 
         const firstMessage = errorMessages[0];
-        console.log(Object.getPrototypeOf(firstMessage));
         if (errorMessages[0].startsWith('Missing required')) {
           throw new NotFoundError(errorMessages);
         }

@@ -23,7 +23,6 @@ export const createEvents = async (req, res) => {
 
     res.status(StatusCodes.CREATED).json({ event })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
@@ -33,7 +32,6 @@ export const getAllEvents = async (req, res) => {
     const events = await prisma.events.findMany({})
     res.status(StatusCodes.OK).json({ events })
   } catch (error) {
-    // console.error('Error:', error
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
@@ -52,7 +50,6 @@ export const getEvent = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ event })
   } catch (error) {
-    console.error('Error:', error)
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Internal Server Error' })
@@ -68,8 +65,6 @@ export const updateEvent = async (req, res) => {
       return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid ID' })
     }
 
-    // console.log('parsedId:', parsedId)
-
     const existingEvent = await prisma.events.findUnique({
       where: { id: parsedId },
     })
@@ -81,10 +76,6 @@ export const updateEvent = async (req, res) => {
     }
 
     const updatedData = { ...req.body }
-
-    // console.log('updatedData:', updatedData)
-
-    // console.log('req file:', req.file)
 
     // Check if there's a file uploaded
     if (req.file) {
@@ -103,8 +94,6 @@ export const updateEvent = async (req, res) => {
       data: updatedData,
     })
 
-    console.log('updated events:', updatedEvent)
-
     // Delete previous image from Cloudinary if a new one was uploaded
     if (req.file && existingEvent.imagePublicId) {
       await cloudinary.v2.uploader.destroy(existingEvent.imagePublicId)
@@ -112,7 +101,6 @@ export const updateEvent = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ msg: 'Event modified', updatedEvent })
   } catch (error) {
-    console.error('Error:', error)
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Internal Server Error' })
@@ -143,7 +131,6 @@ export const deleteEvent = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: 'Event deleted', event: deletedEvent })
   } catch (error) {
-    console.error('Error:', error)
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: 'Internal Server Error',
     })
