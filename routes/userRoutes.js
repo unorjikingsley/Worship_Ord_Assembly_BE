@@ -5,8 +5,8 @@ import { validateUpdateUserInput } from '../middleware/validationMiddleware.js';
 
 const router = Router()
 
-router.get('/current-user/:id', getCurrentUser);
+router.get('/current-user', getCurrentUser);
 // router.get('/super-user/')
-router.patch('/update-user/:id', validateUpdateUserInput, updateUser);
+router.patch('/update-user', validateUpdateUserInput, updateUser);
 
 export default router;

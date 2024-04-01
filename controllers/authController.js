@@ -2,25 +2,23 @@ import prisma from '../DB/db.config.js';
 import { StatusCodes } from 'http-status-codes';
 import { comparePassword, hashPassword } from '../utils/passwordUtils.js';
 import { createJWT } from '../utils/tokenUtil.js';
-import { BadRequestError, UnauthenticatedError } from '../errors/customErrors.js';
+import { UnauthenticatedError } from '../errors/customErrors.js';
 
 export const register = async (req, res) => {
   try {
     // Check if any users exist in the database
     const userCount = await prisma.user.count()
     if (userCount > 0) {
-      // return res
-      //   .status(StatusCodes.FORBIDDEN)
-      //   .json({ error: 'Registration not allowed. An Admin already exists.' })
-      throw new BadRequestError(
-        'Registration not allowed. An Admin already exists.'
-      )
+      return res
+        .status(StatusCodes.FORBIDDEN)
+        .json({ error: 'Registration not allowed. An Admin already exists.' })
+      // throw new BadRequestError(
+      //   'Registration not allowed. An Admin already exists.'
+      // )
     }
 
-    // throw new BadRequestError('Email already exists');
-
     // Proceed with registration if no users exist
-    req.body.role = 'user'
+    req.body.role = 'user';
 
     const hashedPassword = await hashPassword(req.body.password)
     req.body.password = hashedPassword
@@ -59,7 +57,7 @@ export const login = async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
     })
 
-    res.status(StatusCodes.OK).json({ msg: 'user logged in' })
+    res.status(StatusCodes.OK).json({ user })
   } catch (error) {
     console.log('Error:', error)
     return res
