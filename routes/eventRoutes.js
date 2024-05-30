@@ -5,7 +5,7 @@ import {
   getEvent,
   updateEvent, 
   deleteEvent 
-} from '../controllers/eventscontrollers.js';
+} from '../controllers/eventsControllers.js';
 
 import upload from '../middleware/multerMiddleware.js';
 
