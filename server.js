@@ -7,8 +7,9 @@ import cors from 'cors';
 const app = express()
 app.use(
   cors({
-    origin: 'https://worshipordainedassembly.netlify.app/',
-    // origin: 'http://localhost:5173',
+    // origin: 'https://worshipordainedassembly.netlify.app/',
+    // origin: 'https://super-admin--worshipordainedassembly.netlify.app/',
+    origin: ['http://localhost:5173', 'https://worshipordainedassembly.netlify.app'],
   })
 )
 
