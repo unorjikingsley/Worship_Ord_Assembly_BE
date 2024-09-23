@@ -22,6 +22,7 @@ export const createPrayerForm = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ prayerForm })
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' })
+    // console.log('error:', error)
   }
 }
 
@@ -31,5 +32,6 @@ export const getAllPrayerForm = async (req, res) => {
     res.status(StatusCodes.OK).json({ prayerForms })
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' })
+    // console.log('error:', error)
   }
 }
