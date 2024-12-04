@@ -4,11 +4,12 @@ dotenv.config()
 
 import express from 'express';
 import cors from 'cors';
-// const cors = require('cors')?
 const app = express()
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    // origin: 'https://worshipordainedassembly.netlify.app/',
+    // origin: 'https://super-admin--worshipordainedassembly.netlify.app/',
+    origin: ['http://localhost:5173', 'https://worshipordainedassembly.netlify.app'],
   })
 )
 
@@ -32,9 +33,9 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
+// app.get('/', (req, res) => {
+//   res.send('Hello World')
+// })
 
 import routes from './routes/index.js'
 app.use(routes)
